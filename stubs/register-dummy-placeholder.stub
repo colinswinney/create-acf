@@ -1,0 +1,104 @@
+<?php
+/**
+ * Register ACF Block
+ * 
+ * @see https://www.advancedcustomfields.com/resources/acf_register_block_type/
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/
+ */
+if (function_exists('acf_register_block_type')) {
+
+    acf_register_block([
+        'name'            => 'dummy-placeholder',
+        'title'           => __('Dummy Placeholder', 'create-acf'),
+        'description'     => __('A simple dummy placeholder block', 'create-acf'),
+        'category'        => 'formatting',
+        'icon'            => 'smiley',
+        'mode'            => 'preview',
+        'keywords'        => [],
+        'align'           => '',
+        'post_types'      => [],
+        'usesContext'     => [],
+        'supports'        => 
+            [
+                'className'     => 'wp-block-dummy-placeholder',
+                'anchor'        => false,
+                'align'         => true,
+                'align_text'    => false,
+                'align_content' => false,
+                'color'         => 
+                    [
+                        'background'    => true,
+                        'gradients'     => true,
+                        'link'          => true,
+                        'text'          => true,
+                    ],
+                'full_height'   => false,
+                'jsx'           => true,
+                'mode'          => true,
+                'multiple'      => true,
+                'spacing'       => 
+                    [
+                        'margin'        => true,
+                        'padding'       => true,
+                        'blockGap'      => true,
+                    ],
+                'typography'    => 
+                    [
+                        'fontSize'      => true,
+                        'lineHeight'    => true,
+                    ],
+            ],
+        'enqueue_style'   => false, // CREATE_ACF_BLOCKS_URL . 'assets/styles/dummy-placeholder.css',
+        'enqueue_script'  => false, // CREATE_ACF_BLOCKS_URL . 'assets/scripts/dummy-placeholder.js',
+        'enqueue_assets'  => false,
+        'render_template' => false,
+        'render_callback' => 'dummy_placeholder_render_callback',
+        'example'         => 
+            [
+                'attributes' => [
+                    'mode' => 'preview',
+                    'data' => 
+                        [
+                            'items' => [
+                                ['item' => 'Item one'],
+                                ['item' => 'Item two'],
+                                ['item' => 'Item three'],
+                            ],
+                        ]
+                    ],
+            ],
+    ]);
+
+    /**
+     * Render callback
+     */
+    function dummy_placeholder_render_callback($block) {
+        // Define block data
+        $b_id = $block['id'];
+        $b_classList = $block['supports']['className'];
+        $b_backgroundColor = $block['backgroundColor'];
+        $b_textColor = $block['textColor'];
+
+        // Add any color related classnames to b_classList
+        $b_textColor ? $b_classList .= ' has-' . $b_textColor . '-color has-text-color' : '';
+        $b_backgroundColor ? $b_classList .= ' has-' . $b_backgroundColor . '-background-color has-background' : '';
+
+        // Store example data
+        $example = $block['example']['attributes']['data']['items'];
+
+        // Allowed InnerBlocks
+        $allowed_blocks = [
+            [ 'core/paragraph' ]
+        ];
+
+        // InnerBlocks Template
+        $template = [
+            [ 'core/paragraph', ['placeholder' => 'An inner paragraph'] ]
+        ];
+
+        // include block file
+        if (file_exists(CREATE_ACF_BLOCKS_PATH . "blocks/dummy-placeholder/dummy-placeholder.php")) {
+            include(CREATE_ACF_BLOCKS_PATH . "blocks/dummy-placeholder/dummy-placeholder.php");
+        }
+    }
+}

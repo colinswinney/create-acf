@@ -1,0 +1,13 @@
+<?php
+
+use StoutLogic\AcfBuilder\FieldsBuilder;
+
+$dummyPlaceholder = new StoutLogic\AcfBuilder\FieldsBuilder('dummy_placeholder', ['style' => 'seamless']);
+
+$dummyPlaceholder
+    ->addRepeater('items')
+        ->addText('item')
+    ->endRepeater()
+    ->setLocation('block', '==', 'acf/dummy-placeholder');
+
+return acf_add_local_field_group($dummyPlaceholder->build());

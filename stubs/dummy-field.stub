@@ -1,0 +1,13 @@
+<?php
+
+use StoutLogic\AcfBuilder\FieldsBuilder;
+
+$dummyField = new StoutLogic\AcfBuilder\FieldsBuilder('dummy_field', ['style' => 'seamless']);
+
+$dummyField
+     ->addRepeater('items')
+        ->addText('item')
+    ->endRepeater()
+    ->setLocation('post_type', '==', 'post');
+
+return acf_add_local_field_group($dummyField->build());

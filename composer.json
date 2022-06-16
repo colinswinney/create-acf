@@ -1,0 +1,15 @@
+{
+	"name": "colinswinney/create-acf",
+	"description": "Create blocks and fields using ACF and ACF Builder",
+	"type": "wordpress-plugin",
+	"require": {
+		"stoutlogic/acf-builder": "^1.12"
+	},
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Colin Swinney",
+			"email": "colinjswinney@gmail.com"
+		}
+	]
+}
