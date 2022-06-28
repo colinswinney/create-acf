@@ -5,22 +5,26 @@ To get started, navigate to `wp-content/plugins/create-acf` and run `composer in
 
 ## Creating Fields
 
-Run `wp create-acf field YourFieldName` to add a new field to the `/fields` directory.
+```wp create-acf field YourFieldName```bash
+
+Adds a new field to the `/fields` directory.
 
 ## Creating Blocks
 
-Run `wp create-acf block YourBlockName` to add a new block to the `/blocks` directory.
+```wp create-acf block YourBlockName```bash
 
--- **Optional flags for creating a block**
+Adds a new block to the `/blocks` directory.
 
-```--nofield```
+### Optional flags for creating a block
 
-By default, an associated field is created in the `/fields` directory for your block.  If this is undesired, use the `--nofield` flag.
+```--nofield```bash
 
-```--js```
+By default, an associated field is created in the `/block/your-block-name` directory.  If this is undesired, use the `--nofield` flag.
 
-Adds a js file to /`assets/scripts` directory and enqueues it in the `/blocks/register-your-block-name.php` file.
+```--js```bash
 
-```--css```
+Adds a js file to the `/blocks/your-block-name` directory and enqueues it in the `/blocks/your-block-name/register-your-block-name.php` file.
 
-Adds a css file to /`assets/styles` directory and enqueues it in the `/blocks/register-your-block-name.php` file.
+```--css```bash
+
+Adds a css file to the `/blocks/your-block-name` directory and enqueues it in the `/blocks/your-block-nameregister-your-block-name.php` file.

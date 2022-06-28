@@ -8,9 +8,9 @@
 if (function_exists('acf_register_block_type')) {
 
     acf_register_block([
-        'name'            => 'dummy-placeholder',
-        'title'           => __('Dummy Placeholder', 'create-acf'),
-        'description'     => __('A simple dummy placeholder block', 'create-acf'),
+        'name'            => 'testinngs',
+        'title'           => __('Testinngs', 'create-acf'),
+        'description'     => __('A simple testinngs block', 'create-acf'),
         'category'        => 'formatting',
         'icon'            => 'smiley',
         'mode'            => 'preview',
@@ -20,7 +20,7 @@ if (function_exists('acf_register_block_type')) {
         'usesContext'     => [],
         'supports'        => 
             [
-                'className'     => 'wp-block-dummy-placeholder',
+                'className'     => 'wp-block-testinngs',
                 'anchor'        => false,
                 'align'         => true,
                 'align_text'    => false,
@@ -47,11 +47,11 @@ if (function_exists('acf_register_block_type')) {
                         'lineHeight'    => true,
                     ],
             ],
-        'enqueue_style'   => false, // CREATE_ACF_BLOCKS_URL . 'blocks/dummy-placeholder/dummy-placeholder.css'
-        'enqueue_script'  => false, // CREATE_ACF_BLOCKS_URL . 'blocks/dummy-placeholder/dummy-placeholder.js'
+        'enqueue_style'   => CREATE_ACF_BLOCKS_URL . 'blocks/testinngs/testinngs.css',
+        'enqueue_script'  => CREATE_ACF_BLOCKS_URL . 'blocks/testinngs/testinngs.js',
         'enqueue_assets'  => false,
         'render_template' => false,
-        'render_callback' => 'dummy_placeholder_render_callback',
+        'render_callback' => 'testinngs_render_callback',
         'example'         => 
             [
                 'attributes' => [
@@ -71,7 +71,7 @@ if (function_exists('acf_register_block_type')) {
     /**
      * Render callback
      */
-    function dummy_placeholder_render_callback($block) {
+    function testinngs_render_callback($block) {
         /**
          * Define block data
          */
@@ -136,8 +136,8 @@ if (function_exists('acf_register_block_type')) {
             [ 'core/paragraph', ['placeholder' => 'An inner paragraph'] ]
         ];
 
-        if (file_exists(CREATE_ACF_BLOCKS_PATH . "blocks/dummy-placeholder/dummy-placeholder.php")) {
-            include(CREATE_ACF_BLOCKS_PATH . "blocks/dummy-placeholder/dummy-placeholder.php");
+        if (file_exists(CREATE_ACF_BLOCKS_PATH . "blocks/testinngs/testinngs.php")) {
+            include(CREATE_ACF_BLOCKS_PATH . "blocks/testinngs/testinngs.php");
         }
     }
 }

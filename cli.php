@@ -184,7 +184,7 @@ if (defined('WP_CLI') && WP_CLI) {
 
             else {
                 $src_fields = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-field-block.stub';
-                $dest_fields = CREATE_ACF_BLOCKS_PATH . 'fields/' . $file_name_slug . '.php';
+                $dest_fields = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/fields-' . $file_name_slug . '.php';
                 $dummy_strings = ['dummy-placeholder', 'dummy_placeholder', 'dummyPlaceholder'];
                 $file_name_strings = [$file_name_slug, $file_name_snake, $file_name_camel_lower];
                 $file_get_contents = $dest_fields;
@@ -201,10 +201,10 @@ if (defined('WP_CLI') && WP_CLI) {
                 // TODO - why does this JS enqueue code need to come first or else it won't replace js file strings?
 
                 // enqueue js file
-                $src_reg = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-js.stub';
-                $dest_reg = CREATE_ACF_BLOCKS_PATH . 'assets/scripts/' . $file_name_slug . '.js';
-                $dummy_strings_reg = ["false, // CREATE_ACF_BLOCKS_URL . 'assets/scripts/". $file_name_slug .".js',"];
-                $file_name_strings_reg = ["CREATE_ACF_BLOCKS_URL . 'assets/scripts/". $file_name_slug .".js',"];
+                $src_reg = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-placeholder-js.stub';
+                $dest_reg = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/' . $file_name_slug . '.js';
+                $dummy_strings_reg = ["false, // CREATE_ACF_BLOCKS_URL . 'blocks/". $file_name_slug ."/". $file_name_slug .".js'"];
+                $file_name_strings_reg = ["CREATE_ACF_BLOCKS_URL . 'blocks/". $file_name_slug ."/". $file_name_slug .".js',"];
                 $file_get_contents_reg = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/register-' . $file_name_slug . '.php';
                 $action_reg = 'Enqueue JS file';
 
@@ -213,8 +213,8 @@ if (defined('WP_CLI') && WP_CLI) {
 
 
                 // clone js file
-                $src_js = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-js.stub';
-                $dest_js = CREATE_ACF_BLOCKS_PATH . 'assets/scripts/' . $file_name_slug . '.js';
+                $src_js = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-placeholder-js.stub';
+                $dest_js = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/' . $file_name_slug . '.js';
                 $dummy_strings_js = ['dummy-placeholder'];
                 $file_name_strings_js = [$file_name_slug];
                 $file_get_contents_js = $dest_js;
@@ -229,10 +229,10 @@ if (defined('WP_CLI') && WP_CLI) {
                 // TODO - why does this CSS enqueue code need to come first or else it won't replace css file strings?
 
                 // enqueue css file
-                $src_reg = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-css.stub';
-                $dest_reg = CREATE_ACF_BLOCKS_PATH . 'assets/styles/' . $file_name_slug . '.css';
-                $dummy_strings_reg = ["false, // CREATE_ACF_BLOCKS_URL . 'assets/styles/". $file_name_slug .".css',"];
-                $file_name_strings_reg = ["CREATE_ACF_BLOCKS_URL . 'assets/styles/". $file_name_slug .".css',"];
+                $src_reg = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-placeholder-css.stub';
+                $dest_reg = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/' . $file_name_slug . '.css';
+                $dummy_strings_reg = ["false, // CREATE_ACF_BLOCKS_URL . 'blocks/". $file_name_slug ."/". $file_name_slug .".css'"];
+                $file_name_strings_reg = ["CREATE_ACF_BLOCKS_URL . 'blocks/". $file_name_slug ."/". $file_name_slug .".css',"];
                 $file_get_contents_reg = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/register-' . $file_name_slug . '.php';
                 $action_reg = 'Enqueue CSS file';
 
@@ -241,8 +241,8 @@ if (defined('WP_CLI') && WP_CLI) {
 
 
                 // clone css file
-                $src_css = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-css.stub';
-                $dest_css = CREATE_ACF_BLOCKS_PATH . 'assets/styles/' . $file_name_slug . '.css';
+                $src_css = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-placeholder-css.stub';
+                $dest_css = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/' . $file_name_slug . '.css';
                 $dummy_strings_css = ['dummy-placeholder'];
                 $file_name_strings_css = [$file_name_slug];
                 $file_get_contents_css = $dest_css;
