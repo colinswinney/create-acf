@@ -1,6 +1,6 @@
 # Create ACF Blocks and Fields from the command line!
 <br />
-<br />
+
 To get started, navigate to `wp-content/plugins/create-acf` and run `composer install`.
 <br />
 <br />
