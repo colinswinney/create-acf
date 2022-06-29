@@ -17,46 +17,110 @@ if( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Only run this plugin if ACF is installed
  */
-if (class_exists('ACF')) {
+if ( class_exists('ACF') ) {
 
-    /**
-     * Define plugin's path
-     */
-    define( 'CREATE_ACF_BLOCKS_PATH', plugin_dir_path( __FILE__ ) );
-    define( 'CREATE_ACF_BLOCKS_URL', plugin_dir_url( __FILE__ ) );
+    class Create_ACF {
+        
+        /**
+         * __construct
+         * 
+         * @param void
+         * 
+         * @return void
+         */
+        
+        public function __construct()
+        {
+            add_action( 'acf/init', array($this, 'init') );
+        }
 
-    /**
-     * Load ACF Builder / Vendor files
-     */
-    if (file_exists(CREATE_ACF_BLOCKS_PATH . '/vendor/autoload.php')) {
-        require_once(CREATE_ACF_BLOCKS_PATH . '/vendor/autoload.php');
+
+
+        /**
+         * init
+         * 
+         * Sets up the plugin
+         * 
+         * @param void
+         * 
+         * @return void
+         */
+        public function init()
+        {
+
+            // Define constants.
+			$this->define( 'CREATE_ACF_BLOCKS_PATH', plugin_dir_path( __FILE__ ) );
+			$this->define( 'CREATE_ACF_BLOCKS_URL', plugin_dir_url( __FILE__ ) );
+
+            // Load ACF Builder / Vendor files
+            if (file_exists(CREATE_ACF_BLOCKS_PATH . '/vendor/autoload.php')) {
+                require_once(CREATE_ACF_BLOCKS_PATH . '/vendor/autoload.php');
+            }
+
+            // Require WP-CLI commands
+            require_once(CREATE_ACF_BLOCKS_PATH . '/cli.php');
+
+            // Require main Register Block class
+            require_once(CREATE_ACF_BLOCKS_PATH . '/register-block.php');
+
+            // Require all "register-" files in the blocks directories
+            $dir = glob(CREATE_ACF_BLOCKS_PATH .'blocks/*/register-*.php');
+            foreach($dir as $file) {
+                require_once($file);
+            }
+
+            // Require all "fields-" files in the blocks directories
+            $dir = glob(CREATE_ACF_BLOCKS_PATH .'blocks/*/fields-*.php');
+            foreach($dir as $file) {
+                require_once($file);
+            }
+
+            // Require all files in the fields directory
+            $dir = glob(CREATE_ACF_BLOCKS_PATH .'fields/*.php');
+            foreach($dir as $field) {
+                require_once($field);
+            }
+        }
+
+
+
+        /**
+         * define
+         *
+         * Defines a constant if doesn't already exist.
+         *
+         * @param string $name
+         * @param mixed  $value
+         * 
+         * @return void
+         */
+        function define( $name, $value = true )
+        {
+            if ( ! defined( $name ) ) {
+                define( $name, $value );
+            }
+        }
     }
 
     /**
-     * Add CLI commands
-     */
-    require_once(CREATE_ACF_BLOCKS_PATH . '/cli.php');
-
-    /**
-     * Init plugin
+     * create_acf 
      * 
-     * - loop through the blocks directory and require all "register-" files
-     * - loop through the fields directory and require all files
+	 * @param void
      * 
-     * @see https://www.advancedcustomfields.com/resources/acf_register_block_type/
+	 * @return Create_ACF
      */
-    add_action('acf/init', function() {
+    function create_acf()
+    {
+        global $create_acf;
 
-        $dir = glob(CREATE_ACF_BLOCKS_PATH .'blocks/*/register-*.php');
-        foreach($dir as $file) {
-            require_once($file);
-        }
-
-        $dir = glob(CREATE_ACF_BLOCKS_PATH .'fields/*.php');
-        foreach($dir as $field) {
-            require_once($field);
-        }
-
-    });
+		// Instantiate only once.
+		if ( ! isset( $create_acf ) ) {
+			$create_acf = new Create_ACF();
+		}
+		return $create_acf;
+    }
+    
+    // Instantiate
+    create_acf();
 
 } // end if class_exists('ACF')

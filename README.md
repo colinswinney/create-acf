@@ -1,5 +1,11 @@
-# Create ACF Blocks and Fields from the command line!
+# Create ACF
 <br />
+
+**Create ACF blocks and fields from the command line!**
+<br/>
+
+This plugin is heavily based off of the amazing [ACF Composer](https://github.com/Log1x/acf-composer) created for use with the [Sage](https://github.com/roots/sage) starter theme.  The purpose of this project is to provide a similar workflow in a stand alone plugin.
+<br/>
 
 To get started, navigate to `wp-content/plugins/create-acf` and run `composer install`.
 <br />
@@ -20,21 +26,3 @@ Adds a new field to the `/fields` directory.
 Adds a new block to the `/blocks` directory.
 <br />
 <br />
-
-### Optional flags for creating a block
-
-- ```--nofield```
-
-By default, an associated field is created in the `/block/your-block-name` directory.  If this is undesired, use the `--nofield` flag.
-<br />
-<br />
-
-- ```--js```
-
-Adds a js file to the `/blocks/your-block-name` directory and enqueues it in the `/blocks/your-block-name/register-your-block-name.php` file.
-<br />
-<br />
-
-- ```--css```
-
-Adds a css file to the `/blocks/your-block-name` directory and enqueues it in the `/blocks/your-block-nameregister-your-block-name.php` file.

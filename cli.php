@@ -8,8 +8,11 @@ if (defined('WP_CLI') && WP_CLI) {
          * Dummy Placeholder <- DummyPlaceholder
          * 
          * @param string $str
+         * 
+         * @return string
          */
-        private function camel_case_to_uppercase($str) {
+        private function camel_case_to_uppercase($str)
+        {
             return substr(preg_replace('/(?<=[a-z])[A-Z]|[A-Z](?=[a-z])/', ' $0', $str), 1);
         }
 
@@ -19,8 +22,11 @@ if (defined('WP_CLI') && WP_CLI) {
          * dummy placeholder <- DummyPlaceholder
          * 
          * @param string $str
+         * 
+         * @return string
          */
-        private function camel_case_to_lowercase($str) {
+        private function camel_case_to_lowercase($str)
+        {
             $str = preg_replace('/(?<=[a-z])[A-Z]|[A-Z](?=[a-z])/', ' $0', $str);
             return substr(strtolower($str), 1);
         }
@@ -31,8 +37,11 @@ if (defined('WP_CLI') && WP_CLI) {
          * dummy-placeholder <- DummyPlaceholder
          * 
          * @param string $str
+         * 
+         * @return string
          */
-        private function camel_case_to_slug($str) {
+        private function camel_case_to_slug($str)
+        {
             $str[0] = strtolower($str[0]);
             $func = create_function('$c', 'return "-" . strtolower($c[1]);');
             return preg_replace_callback('/([A-Z])/', $func, $str);
@@ -44,8 +53,11 @@ if (defined('WP_CLI') && WP_CLI) {
          * dummy_placeholder <- DummyPlaceholder
          * 
          * @param string $str
+         * 
+         * @return string
          */
-        private function camel_case_to_snake($str) {
+        private function camel_case_to_snake($str)
+        {
             $str[0] = strtolower($str[0]);
             $func = create_function('$c', 'return "_" . strtolower($c[1]);');
             return preg_replace_callback('/([A-Z])/', $func, $str);
@@ -54,11 +66,30 @@ if (defined('WP_CLI') && WP_CLI) {
 
 
         /** 
+         * Dummy_Placeholder <- DummyPlaceholder
+         * 
+         * @param string $str
+         * 
+         * @return string
+         */
+        private function camel_case_to_snake_uppercase($str)
+        {
+            $func = create_function('$c', 'return "_" . $c[1];');
+            $str = preg_replace_callback('/([A-Z])/', $func, $str);
+            return ltrim($str, $str[0]);
+        }
+
+
+
+        /** 
          * dummyPlaceholder <- DummyPlaceholder
          * 
          * @param string $str
+         * 
+         * @return string
          */
-        private function camel_case_to_lcfirst($str) {
+        private function camel_case_to_lcfirst($str)
+        {
             return lcfirst($str);
         }
 
@@ -73,8 +104,11 @@ if (defined('WP_CLI') && WP_CLI) {
          * @param array $dest_strings 
          * @param string $file_get_contents
          * @param string $action
+         * 
+         * @return void
          */
-        private function copy_replace_file_contents($src, $dest, $src_strings, $dest_strings, $file_get_contents, $action) {
+        private function copy_replace_file_contents($src, $dest, $src_strings, $dest_strings, $file_get_contents, $action)
+        {
             if( !copy($src, $dest) ) { 
                 WP_CLI::error( $action , $exit = true );
             } 
@@ -93,8 +127,11 @@ if (defined('WP_CLI') && WP_CLI) {
          * Create a new field  ( wp create-acf field ExampleField )
          * 
          * @param array $args
+         * 
+         * @return void
          */
-        public function field($args) {
+        public function field($args)
+        {
 
             // User input
             $file_name = $args[0];
@@ -119,23 +156,15 @@ if (defined('WP_CLI') && WP_CLI) {
         
          /**
          * Create a new block ( wp create-acf block ExampleBlock )
-         *  
-         * --nofield (optional)
-         * --js (optional)
-         * --css (optional)
          * 
          * @param array $args
-         * @param array $assoc_args
+         * 
+         * @return void
          */
-        public function block($args, $assoc_args) {
-
-
-
+        public function block($args)
+        {
             // User input
             $file_name = $args[0];
-            $no_field = $assoc_args['nofield'];
-            $create_js = $assoc_args['js'];
-            $create_css = $assoc_args['css'];
 
 
 
@@ -144,6 +173,7 @@ if (defined('WP_CLI') && WP_CLI) {
             $file_name_lowercase = $this->camel_case_to_lowercase($file_name);
             $file_name_slug = $this->camel_case_to_slug($file_name);
             $file_name_snake = $this->camel_case_to_snake($file_name);
+            $file_name_snake_upper = $this->camel_case_to_snake_uppercase($file_name);
             $file_name_camel_lower = $this->camel_case_to_lcfirst($file_name);
 
 
@@ -151,13 +181,16 @@ if (defined('WP_CLI') && WP_CLI) {
             // Create the block folder
             is_dir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '') || mkdir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '');
 
+            // Create the block asset folder
+            is_dir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/assets') || mkdir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/assets');
+
 
 
             // Copy register-dummy-placeholder.stub to register-*.php
             $src_register = CREATE_ACF_BLOCKS_PATH . 'stubs/register-dummy-placeholder.stub';
             $dest_register = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/register-' . $file_name_slug . '.php';
-            $dummy_strings = ['DummyPlaceholder','Dummy Placeholder', 'dummy placeholder', 'dummy-placeholder', 'dummy_placeholder'];
-            $file_name_strings = [$file_name, $file_name_uppercase, $file_name_lowercase, $file_name_slug, $file_name_snake];
+            $dummy_strings = ['DummyPlaceholder','Dummy Placeholder', 'dummy placeholder', 'dummy-placeholder', 'dummy_placeholder', 'Dummy_Placeholder'];
+            $file_name_strings = [$file_name, $file_name_uppercase, $file_name_lowercase, $file_name_slug, $file_name_snake,  $file_name_snake_upper];
             $file_get_contents = $dest_register;
             $action = 'Clone register file';
 
@@ -177,80 +210,27 @@ if (defined('WP_CLI') && WP_CLI) {
 
 
 
-            // Copy dummy-field-block.stub to fields/*.php and replace the variables
-            if ($no_field) {
-                // Do nothing if --nofield is set
-            }
+            // copy js file
+            $src_js = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-placeholder-js.stub';
+            $dest_js = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/assets/' . $file_name_slug . '.js';
+            $dummy_strings_js = ['dummy-placeholder'];
+            $file_name_strings_js = [$file_name_slug];
+            $file_get_contents_js = $dest_js;
+            $action_js = 'Clone JS file';
 
-            else {
-                $src_fields = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-field-block.stub';
-                $dest_fields = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/fields-' . $file_name_slug . '.php';
-                $dummy_strings = ['dummy-placeholder', 'dummy_placeholder', 'dummyPlaceholder'];
-                $file_name_strings = [$file_name_slug, $file_name_snake, $file_name_camel_lower];
-                $file_get_contents = $dest_fields;
-                $action = 'Clone fields/block file';
-
-                $this->copy_replace_file_contents($src_fields, $dest_fields, $dummy_strings, $file_name_strings, $file_get_contents, $action);
-            }
+            $this->copy_replace_file_contents($src_js, $dest_js, $dummy_strings_js, $file_name_strings_js, $file_get_contents_js, $action_js);
 
 
 
-            // Create js file if user inputs --js
-            if ($create_js) {
+            // copy css file
+            $src_css = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-placeholder-css.stub';
+            $dest_css = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/assets/' . $file_name_slug . '.css';
+            $dummy_strings_css = ['dummy-placeholder'];
+            $file_name_strings_css = [$file_name_slug];
+            $file_get_contents_css = $dest_css;
+            $action_css = 'Clone CSS file';
 
-                // TODO - why does this JS enqueue code need to come first or else it won't replace js file strings?
-
-                // enqueue js file
-                $src_reg = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-placeholder-js.stub';
-                $dest_reg = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/' . $file_name_slug . '.js';
-                $dummy_strings_reg = ["false, // CREATE_ACF_BLOCKS_URL . 'blocks/". $file_name_slug ."/". $file_name_slug .".js'"];
-                $file_name_strings_reg = ["CREATE_ACF_BLOCKS_URL . 'blocks/". $file_name_slug ."/". $file_name_slug .".js',"];
-                $file_get_contents_reg = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/register-' . $file_name_slug . '.php';
-                $action_reg = 'Enqueue JS file';
-
-                $this->copy_replace_file_contents($src_reg, $dest_reg, $dummy_strings_reg, $file_name_strings_reg, $file_get_contents_reg, $action_reg);
-
-
-
-                // clone js file
-                $src_js = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-placeholder-js.stub';
-                $dest_js = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/' . $file_name_slug . '.js';
-                $dummy_strings_js = ['dummy-placeholder'];
-                $file_name_strings_js = [$file_name_slug];
-                $file_get_contents_js = $dest_js;
-                $action_js = 'Clone JS file';
-
-                $this->copy_replace_file_contents($src_js, $dest_js, $dummy_strings_js, $file_name_strings_js, $file_get_contents_js, $action_js);
-            }
-
-
-            // Create css file if user inputs --css
-            if ($create_css) {
-                // TODO - why does this CSS enqueue code need to come first or else it won't replace css file strings?
-
-                // enqueue css file
-                $src_reg = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-placeholder-css.stub';
-                $dest_reg = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/' . $file_name_slug . '.css';
-                $dummy_strings_reg = ["false, // CREATE_ACF_BLOCKS_URL . 'blocks/". $file_name_slug ."/". $file_name_slug .".css'"];
-                $file_name_strings_reg = ["CREATE_ACF_BLOCKS_URL . 'blocks/". $file_name_slug ."/". $file_name_slug .".css',"];
-                $file_get_contents_reg = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/register-' . $file_name_slug . '.php';
-                $action_reg = 'Enqueue CSS file';
-
-                $this->copy_replace_file_contents($src_reg, $dest_reg, $dummy_strings_reg, $file_name_strings_reg, $file_get_contents_reg, $action_reg);
-                
-
-
-                // clone css file
-                $src_css = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-placeholder-css.stub';
-                $dest_css = CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/' . $file_name_slug . '.css';
-                $dummy_strings_css = ['dummy-placeholder'];
-                $file_name_strings_css = [$file_name_slug];
-                $file_get_contents_css = $dest_css;
-                $action_css = 'Clone CSS file';
-
-                $this->copy_replace_file_contents($src_css, $dest_css, $dummy_strings_css, $file_name_strings_css, $file_get_contents_css, $action_css);
-
-            }
+            $this->copy_replace_file_contents($src_css, $dest_css, $dummy_strings_css, $file_name_strings_css, $file_get_contents_css, $action_css);
 
             WP_CLI::success('All done!');
         }

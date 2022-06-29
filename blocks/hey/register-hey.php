@@ -1,32 +1,32 @@
 <?php
 
 /**
- * Register Dummy_Placeholder Block
+ * Register Hey Block
  * 
  * @see https://www.advancedcustomfields.com/resources/acf_register_block_type/
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/
  */
-class Dummy_Placeholder extends Register_Block {
+class Hey extends Register_Block {
     /**
      * The block slug.
      *
      * @var string
      */
-    public $slug = 'dummy-placeholder';
+    public $slug = 'hey';
 
     /**
      * The block name.
      *
      * @var string
      */
-    public $name = 'Dummy Placeholder';
+    public $name = 'Hey';
 
     /**
      * The block description.
      *
      * @var string
      */
-    public $description = 'A simple Dummy Placeholder block';
+    public $description = 'A simple Hey block';
 
     /**
      * The block category.
@@ -83,7 +83,7 @@ class Dummy_Placeholder extends Register_Block {
      * @var array
      */
     public $supports = [
-        'className'     => 'wp-block-dummy-placeholder',
+        'className'     => 'wp-block-hey',
         'anchor'        => false,
         'align'         => false,
         'align_text'    => false,
@@ -145,7 +145,7 @@ class Dummy_Placeholder extends Register_Block {
      */
     public function enqueue_style()
     {
-        return CREATE_ACF_BLOCKS_URL . 'blocks/dummy-placeholder/assets/dummy-placeholder.css';
+        return CREATE_ACF_BLOCKS_URL . 'blocks/hey/assets/hey.css';
     }
 
     /**
@@ -155,7 +155,7 @@ class Dummy_Placeholder extends Register_Block {
      */
     public function enqueue_script()
     {
-        return CREATE_ACF_BLOCKS_URL . 'blocks/dummy-placeholder/assets/dummy-placeholder.js';
+        return CREATE_ACF_BLOCKS_URL . 'blocks/hey/assets/hey.js';
     }
 
     /**
@@ -165,16 +165,16 @@ class Dummy_Placeholder extends Register_Block {
      */
     public function create_fields()
     {
-        $dummy_placeholder_fields = new StoutLogic\AcfBuilder\FieldsBuilder('dummy-placeholder');
+        $hey_fields = new StoutLogic\AcfBuilder\FieldsBuilder('hey');
 
-        $dummy_placeholder_fields->setLocation('block', '==', 'acf/dummy-placeholder');
+        $hey_fields->setLocation('block', '==', 'acf/hey');
 
-        $dummy_placeholder_fields
+        $hey_fields
             ->addRepeater('items')
                 ->addText('item')
             ->endRepeater();
 
-        return acf_add_local_field_group($dummy_placeholder_fields->build());
+        return acf_add_local_field_group($hey_fields->build());
     }
 
     /**
@@ -198,14 +198,14 @@ class Dummy_Placeholder extends Register_Block {
 }
 
 /**
- * Instantiate the dummy_placeholder block 
+ * Instantiate the hey block 
  * 
  * @param   void
- 
- * @return  Dummy_Placeholder
+ * 
+ * @return  Hey
  */
-function dummy_placeholder() {
-    $dummy_placeholder = new Dummy_Placeholder();
-    return $dummy_placeholder;
+function hey() {
+    $hey = new Hey();
+    return $hey;
 }
-dummy_placeholder();
+hey();

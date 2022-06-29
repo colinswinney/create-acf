@@ -2,7 +2,7 @@
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-$dummyField = new StoutLogic\AcfBuilder\FieldsBuilder('dummy_field', ['style' => 'seamless']);
+$dummyField = new FieldsBuilder('dummy_field', ['style' => 'seamless']);
 
 $dummyField
      ->addRepeater('items')
