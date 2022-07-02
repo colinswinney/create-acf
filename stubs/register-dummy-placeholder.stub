@@ -139,23 +139,14 @@ class Dummy_Placeholder extends Register_Block {
     ];
 
     /**
-     * Enqueue the block styles.
+     * Assets to be enqueued when rendering the block.
      *
-     * @return string
+     * @return void
      */
-    public function enqueue_style()
+    public function enqueue()
     {
-        return CREATE_ACF_BLOCKS_URL . 'blocks/dummy-placeholder/assets/dummy-placeholder.css';
-    }
-
-    /**
-     * Enqueue the block script.
-     *
-     * @return string
-     */
-    public function enqueue_script()
-    {
-        return CREATE_ACF_BLOCKS_URL . 'blocks/dummy-placeholder/assets/dummy-placeholder.js';
+        wp_enqueue_style( 'block/acf-dummy-placeholder-css', CREATE_ACF_BLOCKS_URL . 'blocks/dummy-placeholder/assets/dummy-placeholder.css', $deps = [], $ver = false, $media = 'all' );
+        wp_enqueue_script( 'block/acf-dummy-placeholder-js', CREATE_ACF_BLOCKS_URL . 'blocks/dummy-placeholder/assets/dummy-placeholder.js', $deps = [], $ver = false, $in_footer = true);
     }
 
     /**
@@ -179,6 +170,8 @@ class Dummy_Placeholder extends Register_Block {
 
     /**
      * Functions to be passed to the block
+     *
+     * @return array
      */
     public function send_to_block() {
         return [

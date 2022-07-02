@@ -118,23 +118,13 @@ if (function_exists('acf_register_block_type')) {
 
 
         /**
-         * Enqueue the block style.
+         * Assets enqueued when rendering the block.
          *
          * @return void
          */
-        public function enqueue_style()
+        public function enqueue()
         {
-           // 
-        }
-
-        /**
-         * Enqueue the block script.
-         *
-         * @return void
-         */
-        public function enqueue_script()
-        {
-           // 
+            //
         }
 
 
@@ -166,8 +156,7 @@ if (function_exists('acf_register_block_type')) {
                         'data' => $this->example,
                     ]
                 ],
-                'enqueue_style'   => $this->enqueue_style(),
-                'enqueue_script'  => $this->enqueue_script(),
+                'enqueue_assets'   => $this->enqueue(),
                 'render_callback' => function($block) {
                     $this->render_callback($block);
                 },
