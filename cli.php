@@ -43,7 +43,9 @@ if (defined('WP_CLI') && WP_CLI) {
         private function camel_case_to_slug($str)
         {
             $str[0] = strtolower($str[0]);
-            $func = create_function('$c', 'return "-" . strtolower($c[1]);');
+            $func = function($c){
+                return '-'.strtolower($c[1]);
+            };
             return preg_replace_callback('/([A-Z])/', $func, $str);
         }
 
@@ -59,7 +61,9 @@ if (defined('WP_CLI') && WP_CLI) {
         private function camel_case_to_snake($str)
         {
             $str[0] = strtolower($str[0]);
-            $func = create_function('$c', 'return "_" . strtolower($c[1]);');
+            $func = function($c){
+                return '_'.strtolower($c[1]);
+            };
             return preg_replace_callback('/([A-Z])/', $func, $str);
         }
 
@@ -74,7 +78,9 @@ if (defined('WP_CLI') && WP_CLI) {
          */
         private function camel_case_to_snake_uppercase($str)
         {
-            $func = create_function('$c', 'return "_" . $c[1];');
+            $func = function($c){
+                return "_" . $c[1];;
+            };
             $str = preg_replace_callback('/([A-Z])/', $func, $str);
             return ltrim($str, $str[0]);
         }

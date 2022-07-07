@@ -123,4 +123,13 @@ if ( class_exists('ACF') ) {
     // Instantiate
     create_acf();
 
+} else {
+    add_action( 'admin_notices', function() {
+        ?>
+        <div class="notice notice-error">
+            <p><?php _e( 'The plugin Create ACF requires Advanced Custom Fields to be installed and activated.', 'create-acf' ); ?></p>
+        </div>
+        <?php
+    } );
+    
 } // end if class_exists('ACF')
