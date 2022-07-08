@@ -3,7 +3,7 @@
 /**
  * Plugin Name:   Create ACF
  * Plugin URI:    https://colinswinney.com
- * Description:   Create blocks and fields using ACF and ACF Builder
+ * Description:   Create blocks and fields using ACF Pro and ACF Builder
  * Version:       1.0
  * Author:        Colin Swinney
  * Author URI:    https://colinswinney.com
@@ -15,9 +15,9 @@
 if( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Only run this plugin if ACF is installed
+ * Only run this plugin if ACF Pro is installed
  */
-if ( class_exists('ACF') ) {
+if ( class_exists('acf_pro') ) {
 
     class Create_ACF {
         
@@ -127,7 +127,7 @@ if ( class_exists('ACF') ) {
     add_action( 'admin_notices', function() {
         ?>
         <div class="notice notice-error">
-            <p><?php _e( 'The plugin Create ACF requires Advanced Custom Fields to be installed and activated.', 'create-acf' ); ?></p>
+            <p><?php _e( 'The plugin Create ACF requires Advanced Custom Fields Pro to be installed and activated.', 'create-acf' ); ?></p>
         </div>
         <?php
     } );
