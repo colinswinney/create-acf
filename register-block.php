@@ -156,7 +156,6 @@ if (function_exists('acf_register_block_type')) {
                         'data' => $this->example,
                     ]
                 ],
-                'enqueue_assets'   => $this->enqueue(),
                 'render_callback' => function($block) {
                     $this->render_callback($block);
                 },
@@ -174,6 +173,11 @@ if (function_exists('acf_register_block_type')) {
          */
         public function render_callback($block)
         {
+
+            /**
+             * Only enqueue assets if the block is being rendered.
+             */
+            $this->enqueue();
 
             /**
              * Create variables from data to send to block
