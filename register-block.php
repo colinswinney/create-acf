@@ -23,6 +23,7 @@ if (function_exists('acf_register_block_type')) {
         {
             $this->register_block();
             $this->create_fields();
+			$this->enqueue_editor_assets();
         }
 
         /**
@@ -126,6 +127,15 @@ if (function_exists('acf_register_block_type')) {
         {
             //
         }
+
+		/**
+		 * Enqueue assets for the block in the editor.
+		 */
+		public function enqueue_editor_assets() {
+			add_action('enqueue_block_editor_assets', function () {
+				$this->enqueue();
+			});
+		}
 
 
         /**
