@@ -5,9 +5,11 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 $dummyField = new FieldsBuilder('dummy_field', ['style' => 'seamless']);
 
 $dummyField
+	->setLocation('post_type', '==', 'post');
+
+$dummyField
     ->addRepeater('items')
         ->addText('item')
-    ->endRepeater()
-    ->setLocation('post_type', '==', 'post');
+    ->endRepeater();
 
 return acf_add_local_field_group($dummyField->build());

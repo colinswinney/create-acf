@@ -6,9 +6,9 @@ if (defined('WP_CLI') && WP_CLI) {
 
         /**
          * Dummy Placeholder <- DummyPlaceholder
-         * 
+         *
          * @param string $str
-         * 
+         *
          * @return string
          */
         private function camel_case_to_uppercase($str)
@@ -20,9 +20,9 @@ if (defined('WP_CLI') && WP_CLI) {
 
         /**
          * dummy placeholder <- DummyPlaceholder
-         * 
+         *
          * @param string $str
-         * 
+         *
          * @return string
          */
         private function camel_case_to_lowercase($str)
@@ -33,11 +33,11 @@ if (defined('WP_CLI') && WP_CLI) {
 
 
 
-        /** 
+        /**
          * dummy-placeholder <- DummyPlaceholder
-         * 
+         *
          * @param string $str
-         * 
+         *
          * @return string
          */
         private function camel_case_to_slug($str)
@@ -51,11 +51,11 @@ if (defined('WP_CLI') && WP_CLI) {
 
 
 
-        /** 
+        /**
          * dummy_placeholder <- DummyPlaceholder
-         * 
+         *
          * @param string $str
-         * 
+         *
          * @return string
          */
         private function camel_case_to_snake($str)
@@ -69,11 +69,11 @@ if (defined('WP_CLI') && WP_CLI) {
 
 
 
-        /** 
+        /**
          * Dummy_Placeholder <- DummyPlaceholder
-         * 
+         *
          * @param string $str
-         * 
+         *
          * @return string
          */
         private function camel_case_to_snake_uppercase($str)
@@ -87,11 +87,11 @@ if (defined('WP_CLI') && WP_CLI) {
 
 
 
-        /** 
+        /**
          * dummyPlaceholder <- DummyPlaceholder
-         * 
+         *
          * @param string $str
-         * 
+         *
          * @return string
          */
         private function camel_case_to_lcfirst($str)
@@ -103,22 +103,22 @@ if (defined('WP_CLI') && WP_CLI) {
 
         /**
          * Copy and replace text in the newly created destination files
-         * 
+         *
          * @param string $src
          * @param string $dest
-         * @param array $src_strings 
-         * @param array $dest_strings 
+         * @param array $src_strings
+         * @param array $dest_strings
          * @param string $file_get_contents
          * @param string $action
-         * 
+         *
          * @return void
          */
         private function copy_replace_file_contents($src, $dest, $src_strings, $dest_strings, $file_get_contents, $action)
         {
-            if( !copy($src, $dest) ) { 
+            if( !copy($src, $dest) ) {
                 WP_CLI::error( $action , $exit = true );
-            } 
-            else { 
+            }
+            else {
                 $file_contents = file_get_contents($file_get_contents);
                 $file_contents = str_replace($src_strings, $dest_strings, $file_contents);
                 file_put_contents($file_get_contents, $file_contents);
@@ -131,9 +131,9 @@ if (defined('WP_CLI') && WP_CLI) {
 
         /**
          * Create a new field  ( wp create-acf field ExampleField )
-         * 
+         *
          * @param array $args
-         * 
+         *
          * @return void
          */
         public function field($args)
@@ -146,25 +146,34 @@ if (defined('WP_CLI') && WP_CLI) {
             $file_name_slug = $this->camel_case_to_slug($file_name);
             $file_name_snake = $this->camel_case_to_snake($file_name);
             $file_name_camel_lower = $this->camel_case_to_lcfirst($file_name);
-            
-            // Copy dummy-field.stub to example-field.php and replace the variables
-            $src_fields = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-field.stub';
-            $dest_fields = CREATE_ACF_BLOCKS_PATH . 'fields/' . $file_name_slug . '.php';
-            $src_strings = ['dummy-field', 'dummy_field', 'dummyField'];
-            $dest_strings = [$file_name_slug, $file_name_snake, $file_name_camel_lower];
-            $file_get_contents = $dest_fields;
-            $action = 'Create field';
 
-            $this->copy_replace_file_contents($src_fields, $dest_fields, $src_strings, $dest_strings, $file_get_contents, $action);
+			// check if field already exists
+			if( !file_exists(CREATE_ACF_BLOCKS_PATH . 'fields/' . $file_name_slug . '.php') ) {
+
+				// Copy dummy-field.stub to example-field.php and replace the variables
+				$src_fields = CREATE_ACF_BLOCKS_PATH . 'stubs/dummy-field.stub';
+				$dest_fields = CREATE_ACF_BLOCKS_PATH . 'fields/' . $file_name_slug . '.php';
+				$src_strings = ['dummy-field', 'dummy_field', 'dummyField'];
+				$dest_strings = [$file_name_slug, $file_name_snake, $file_name_camel_lower];
+				$file_get_contents = $dest_fields;
+				$action = 'Create field';
+
+				$this->copy_replace_file_contents($src_fields, $dest_fields, $src_strings, $dest_strings, $file_get_contents, $action);
+
+			} else {
+				return WP_CLI::error( 'Field already exists' , $exit = true );
+			}
+
+
         }
 
 
-        
+
          /**
          * Create a new block ( wp create-acf block ExampleBlock )
-         * 
+         *
          * @param array $args
-         * 
+         *
          * @return void
          */
         public function block($args)
@@ -184,11 +193,16 @@ if (defined('WP_CLI') && WP_CLI) {
 
 
 
-            // Create the block folder
-            is_dir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '') || mkdir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '');
+			// check if block already exists
+			if( !file_exists(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '') ) {
+				// Create the block folder
+				is_dir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '') || mkdir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '');
 
-            // Create the block asset folder
-            is_dir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/assets') || mkdir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/assets');
+				// Create the block asset folder
+				is_dir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/assets') || mkdir(CREATE_ACF_BLOCKS_PATH . 'blocks/' . $file_name_slug . '/assets');
+			} else {
+				return WP_CLI::error( 'Block already exists' , $exit = true );
+			}
 
 
 
